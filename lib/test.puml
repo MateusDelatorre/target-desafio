@@ -1,0 +1,87 @@
+@startuml
+class User {
+String hash
+String nick
+String photoFileName
+byte[] photo
+String photoURL
+boolean enable
+}
+
+class Project {
+String hash
+String nome
+String description
+String refcode
+Date deadline
+boolean privative
+String imageFileName
+byte[] img
+}
+
+class Flow {
+String hash
+}
+
+class Stage {
+String hash
+String title
+boolean state
+}
+
+class Position {
+String hash
+
+}
+
+class Activity {
+String hash
+String title
+String description
+Date deadline
+String imgFN
+byte[] image
+int position
+}
+
+class Comment {
+String hash
+String text
+Date date
+}
+
+class Team {
+String hash
+String name
+}
+
+class Directory {
+String hash
+String name
+}
+
+class Delivery {
+String hash
+String filename
+byte[] file
+Date date
+}
+
+
+
+User "1" ---- "*" Project : Owner
+User "1" -- "*" Directory : Owner
+Project "*" -- Directory : projects
+User "*" ----- "*" Project : Member
+Project "1" - "1" Flow : Flow
+Flow "1" - "*" Stage : Stages
+Stage "*" -- "*" Activity : Positions
+(Stage,Activity) .. Position
+Stage "1" -- "*" Activity : Activities
+Activity "1" -- "*" Comment : Comments
+User "1" - "*" Comment : Author
+User "*" -- "*" Team
+Project "1" - "*" Team
+Delivery "*" -- "1" Activity
+Delivery "*" -- "1" Team
+@enduml

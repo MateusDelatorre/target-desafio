@@ -1,0 +1,50 @@
+@startuml
+
+entity "clientes" {
+  +id: int <<PK>>
+  --
+  razao_social: string
+  estado_id: int <<FK>>
+}
+
+entity "telefones" {
+  +id: int <<PK>>
+  --
+  cliente_id: int <<FK>>
+  tipo_id: int <<FK>>
+  numero: string
+}
+
+entity "tipos_telefone" {
+  +id: int <<PK>>
+  --
+  descricao: string
+}
+
+entity "estados" {
+  +id: int <<PK>>
+  --
+  codigo: string
+  nome: string
+}
+
+clientes }|--|| estados : "estado_id"
+telefones }|--|| clientes : "cliente_id"
+telefones }|--|| tipos_telefone : "tipo_id"
+
+@enduml
+
+sql:
+
+SELECT
+    c.id_cliente,
+    c.razao_social,
+    t.numero AS telefone
+FROM
+    Cliente c
+INNER JOIN
+    Telefone t ON c.id_cliente = t.cliente_id
+INNER JOIN
+    Estado e ON c.estado_id = e.id_estado
+WHERE
+    e.codigo = 'SP';
